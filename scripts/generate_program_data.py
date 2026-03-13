@@ -239,20 +239,25 @@ def build_program_data(rows: list[list[str]], skipped: int) -> dict:
 
 
 def main() -> int:
-    if len(sys.argv) != 3:
+    if len(sys.argv) not in (3, 4):
         print(
-            "Usage: generate_program_data.py <input.xlsx> <output.json>",
+            "Usage: generate_program_data.py <input.xlsx> <output.json> [output.js]",
             file=sys.stderr,
         )
         return 1
 
     input_path = Path(sys.argv[1])
     output_path = Path(sys.argv[2])
+    js_output_path = Path(sys.argv[3]) if len(sys.argv) == 4 else None
 
     rows, skipped = parse_rows(input_path)
     data = build_program_data(rows, skipped)
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(json.dumps(data, indent=2))
+    json_payload = json.dumps(data, indent=2)
+    output_path.write_text(json_payload)
+    if js_output_path is not None:
+        js_output_path.parent.mkdir(parents=True, exist_ok=True)
+        js_output_path.write_text(f"window.PROGRAM_DATA = {json_payload};\n")
     print(
         f"Wrote {data['summary']['courseCount']} courses and "
         f"{data['summary']['skillCount']} skills to {output_path}"
