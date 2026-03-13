@@ -169,6 +169,83 @@
     `;
   }
 
+  function radarChart(items) {
+    const width = 360;
+    const height = 320;
+    const cx = 170;
+    const cy = 150;
+    const radius = 104;
+    const levels = 4;
+
+    function point(angleIndex, scale) {
+      const angle = (-Math.PI / 2) + ((Math.PI * 2) / items.length) * angleIndex;
+      const r = radius * scale;
+      return {
+        x: cx + Math.cos(angle) * r,
+        y: cy + Math.sin(angle) * r,
+      };
+    }
+
+    const grid = Array.from({ length: levels }, function (_, index) {
+      const scale = (index + 1) / levels;
+      const points = items.map(function (_, itemIndex) {
+        const p = point(itemIndex, scale);
+        return p.x.toFixed(1) + "," + p.y.toFixed(1);
+      }).join(" ");
+      return '<polygon class="radar-grid-shape" points="' + points + '"></polygon>';
+    }).join("");
+
+    const axes = items.map(function (_, index) {
+      const p = point(index, 1);
+      return '<line class="radar-axis" x1="' + cx + '" y1="' + cy + '" x2="' + p.x.toFixed(1) + '" y2="' + p.y.toFixed(1) + '"></line>';
+    }).join("");
+
+    const dataPoints = items.map(function (item, index) {
+      const p = point(index, item.score / 100);
+      return p.x.toFixed(1) + "," + p.y.toFixed(1);
+    }).join(" ");
+
+    const dots = items.map(function (item, index) {
+      const p = point(index, item.score / 100);
+      return '<circle class="radar-dot" cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="4.5"></circle>';
+    }).join("");
+
+    const labels = items.map(function (item, index) {
+      const p = point(index, 1.18);
+      const anchor = p.x < cx - 20 ? "end" : p.x > cx + 20 ? "start" : "middle";
+      return '<text class="radar-label" x="' + p.x.toFixed(1) + '" y="' + p.y.toFixed(1) + '" text-anchor="' + anchor + '">' + escapeHtml(item.name) + "</text>";
+    }).join("");
+
+    const ticks = [25, 50, 75, 100].map(function (tick, index) {
+      return '<text class="radar-tick" x="' + (cx + 8) + '" y="' + (cy - (radius * ((index + 1) / levels)) + 4).toFixed(1) + '">' + tick + "</text>";
+    }).join("");
+
+    return `
+      <div class="radar-card-wrap">
+        <svg class="radar-svg" viewBox="0 0 ${width} ${height}" aria-label="Skill domain radar chart" role="img">
+          ${grid}
+          ${axes}
+          <polygon class="radar-data-fill" points="${dataPoints}"></polygon>
+          <polyline class="radar-data-line" points="${dataPoints}"></polyline>
+          ${dots}
+          ${labels}
+          ${ticks}
+        </svg>
+        <div class="radar-legend">
+          ${items.map(function (item) {
+            return `
+              <div class="radar-legend-item">
+                <span class="radar-legend-dot"></span>
+                <span>${escapeHtml(item.name)}</span>
+                <strong>${escapeHtml(item.score)}</strong>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      </div>
+    `;
+  }
+
   function chips(values, kind, limit) {
     return values
       .slice(0, limit || values.length)
@@ -231,6 +308,13 @@
         ${statCard("Tracked Domains", DOMAIN_SCORES.length, "Interactive exploration tabs below", "var(--gold)")}
       </section>
       <section class="section-grid">
+        <article class="card">
+          <div class="card-title">
+            <h2>Skill Domain Profile</h2>
+            <span class="chip">Radar overview</span>
+          </div>
+          ${radarChart(DOMAIN_SCORES)}
+        </article>
         <article class="card">
           <div class="card-title">
             <h2>Domain Scores</h2>

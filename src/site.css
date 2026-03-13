@@ -282,7 +282,8 @@ select {
 .rank-list,
 .detail-list,
 .source-links,
-.filter-stack {
+.filter-stack,
+.radar-legend {
   display: grid;
   gap: 12px;
 }
@@ -339,6 +340,89 @@ select {
 .bar-fill {
   height: 100%;
   border-radius: 999px;
+}
+
+.radar-card-wrap {
+  display: grid;
+  gap: 14px;
+}
+
+.radar-svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.radar-grid-shape {
+  fill: rgba(255, 255, 255, 0.02);
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 1;
+}
+
+.radar-axis {
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 1;
+}
+
+.radar-data-fill {
+  fill: rgba(255, 122, 61, 0.16);
+  stroke: none;
+}
+
+.radar-data-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+}
+
+.radar-dot {
+  fill: var(--accent);
+  stroke: rgba(8, 16, 24, 1);
+  stroke-width: 2;
+}
+
+.radar-label {
+  fill: rgba(236, 244, 251, 0.78);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.radar-tick {
+  fill: rgba(236, 244, 251, 0.28);
+  font-size: 9px;
+}
+
+.radar-legend {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.radar-legend-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.radar-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 16px rgba(255, 122, 61, 0.45);
+}
+
+.radar-legend-item span {
+  font-size: 12px;
+  color: rgba(236, 244, 251, 0.8);
+}
+
+.radar-legend-item strong {
+  font-size: 12px;
+  color: var(--accent);
+  font-family: "SFMono-Regular", Consolas, monospace;
 }
 
 .split-grid,
@@ -584,7 +668,8 @@ select {
   .detail-stats,
   .filter-grid,
   .rank-item,
-  .detail-list-item {
+  .detail-list-item,
+  .radar-legend {
     grid-template-columns: 1fr;
   }
 
