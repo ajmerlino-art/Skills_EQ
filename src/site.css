@@ -375,6 +375,14 @@ select {
   stroke-width: 2.5;
 }
 
+.radar-hotspot {
+  cursor: pointer;
+}
+
+.radar-hit-area {
+  fill: transparent;
+}
+
 .radar-dot {
   fill: var(--accent);
   stroke: rgba(8, 16, 24, 1);
@@ -385,6 +393,11 @@ select {
   fill: rgba(236, 244, 251, 0.78);
   font-size: 10px;
   font-weight: 600;
+}
+
+.radar-hotspot:hover .radar-label,
+.radar-hotspot:hover .radar-dot {
+  fill: #ffd4bf;
 }
 
 .radar-tick {
@@ -404,6 +417,10 @@ select {
   padding: 10px 12px;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.03);
+  border: 1px solid transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 .radar-legend-dot {

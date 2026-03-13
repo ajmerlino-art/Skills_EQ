@@ -70,6 +70,16 @@
     { id: "tech", name: "Technology and AI", score: 77, color: "linear-gradient(90deg, #7be6ff, #34c8dd)" },
   ];
 
+  const DOMAIN_SOURCE_MAP = {
+    design: { tab: "categories", category: "User Experience (UX) Design" },
+    research: { tab: "categories", category: "Research" },
+    communication: { tab: "categories", category: "Communication" },
+    collaboration: { tab: "categories", category: "Leadership" },
+    problem: { tab: "categories", category: "Problem Solving" },
+    professional: { tab: "categories", category: "Career Development" },
+    tech: { tab: "categories", category: "Artificial Intelligence (AI)" },
+  };
+
   const EVIDENCE_DISTRIBUTION = [
     { name: "Assessments", value: 44, color: "linear-gradient(90deg, #ff9a62, #ff7a3d)" },
     { name: "Work Products", value: 26, color: "linear-gradient(90deg, #72c6ff, #3ea7ff)" },
@@ -128,6 +138,28 @@
 
   function selectedCourseRecord() {
     return courseLibrary.find((course) => course.code === state.selectedCourse) || courseLibrary[0];
+  }
+
+  function openDomainSource(domainId) {
+    const source = DOMAIN_SOURCE_MAP[domainId];
+    if (!source) return;
+    if (source.tab === "categories" && source.category) {
+      state.selectedCategory = source.category;
+      state.categoryQuery = "";
+      state.activeTab = "categories";
+      return;
+    }
+    if (source.tab === "skills" && source.skill) {
+      state.selectedSkill = source.skill;
+      state.skillQuery = "";
+      state.activeTab = "skills";
+      return;
+    }
+    if (source.tab === "timeline" && source.course) {
+      state.selectedCourse = source.course;
+      state.timelineQuery = "";
+      state.activeTab = "timeline";
+    }
   }
 
   function overallEQ() {
@@ -228,21 +260,20 @@
       return first.x.toFixed(1) + "," + first.y.toFixed(1);
     })();
 
-    const dots = items.map(function (item, index) {
-      const p = point(index, item.score / 100);
-      return '<circle class="radar-dot" cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="4.5"></circle>';
-    }).join("");
-
-    const labels = items.map(function (item, index) {
+    const hotspots = items.map(function (item, index) {
+      const dataPoint = point(index, item.score / 100);
       const p = point(index, 1.12);
       const anchor = p.x < cx - 20 ? "end" : p.x > cx + 20 ? "start" : "middle";
       const lines = wrapLabel(item.name);
       const startY = p.y - ((lines.length - 1) * 6);
-      return '<text class="radar-label" x="' + p.x.toFixed(1) + '" y="' + startY.toFixed(1) + '" text-anchor="' + anchor + '">' +
+      return '<g class="radar-hotspot" data-select-domain="' + escapeHtml(item.id) + '">' +
+        '<circle class="radar-hit-area" cx="' + dataPoint.x.toFixed(1) + '" cy="' + dataPoint.y.toFixed(1) + '" r="18"></circle>' +
+        '<circle class="radar-dot" cx="' + dataPoint.x.toFixed(1) + '" cy="' + dataPoint.y.toFixed(1) + '" r="4.5"></circle>' +
+        '<text class="radar-label" x="' + p.x.toFixed(1) + '" y="' + startY.toFixed(1) + '" text-anchor="' + anchor + '">' +
         lines.map(function (line, lineIndex) {
           return '<tspan x="' + p.x.toFixed(1) + '" dy="' + (lineIndex === 0 ? 0 : 12) + '">' + escapeHtml(line) + "</tspan>";
         }).join("") +
-        "</text>";
+        "</text></g>";
     }).join("");
 
     const ticks = [25, 50, 75, 100].map(function (tick, index) {
@@ -256,18 +287,17 @@
           ${axes}
           <polygon class="radar-data-fill" points="${dataPoints}"></polygon>
           <polyline class="radar-data-line" points="${closedDataPoints}"></polyline>
-          ${dots}
-          ${labels}
+          ${hotspots}
           ${ticks}
         </svg>
         <div class="radar-legend">
           ${items.map(function (item) {
             return `
-              <div class="radar-legend-item">
+              <button class="radar-legend-item" data-select-domain="${escapeHtml(item.id)}">
                 <span class="radar-legend-dot"></span>
                 <span>${escapeHtml(item.name)}</span>
                 <strong>${escapeHtml(item.score)}</strong>
-              </div>
+              </button>
             `;
           }).join("")}
         </div>
@@ -340,16 +370,16 @@
         <article class="card">
           <div class="card-title">
             <h2>Skill Domain Profile</h2>
-            <span class="chip">Radar overview</span>
+            <span class="chip">Click any spoke to open its source</span>
           </div>
           ${radarChart(DOMAIN_SCORES)}
         </article>
         <article class="card">
           <div class="card-title">
             <h2>Domain Scores</h2>
-            <span class="chip">Click categories and lists below</span>
+            <span class="chip">Click any row to open its source</span>
           </div>
-          ${barList(DOMAIN_SCORES, 100)}
+          ${barList(DOMAIN_SCORES.map((item) => Object.assign({}, item, { domain: item.id })), 100, "domain")}
         </article>
         <article class="card">
           <div class="card-title">
@@ -743,6 +773,13 @@
     const tabButton = event.target.closest("[data-tab]");
     if (tabButton) {
       state.activeTab = tabButton.getAttribute("data-tab");
+      render();
+      return;
+    }
+
+    const domainButton = event.target.closest("[data-select-domain]");
+    if (domainButton) {
+      openDomainSource(domainButton.getAttribute("data-select-domain"));
       render();
       return;
     }
