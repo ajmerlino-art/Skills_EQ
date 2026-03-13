@@ -394,6 +394,14 @@ select {
   border-color: rgba(255, 255, 255, 0.18);
 }
 
+.source-link-static {
+  cursor: default;
+}
+
+.source-link-static:hover {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
 .source-link strong {
   display: block;
   font-size: 14px;

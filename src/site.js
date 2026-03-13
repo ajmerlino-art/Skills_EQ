@@ -555,27 +555,24 @@
             a browser-safe global JS file so GitHub Pages can serve the experience without a build pipeline.
           </p>
           <div class="source-links">
-            <a class="source-link" href="./public/assets/course-skills.xlsx" target="_blank" rel="noreferrer">
+            <div class="source-link source-link-static">
               <div>
                 <strong>Course Skills Workbook</strong>
                 <span>${escapeHtml(programData.summary.courseCount)} courses, ${escapeHtml(programData.summary.skillCount)} skills, ${escapeHtml(programData.summary.mappingCount)} mappings</span>
               </div>
-              <span class="chip">Open file</span>
-            </a>
-            <a class="source-link" href="./public/assets/document-reference.pdf" target="_blank" rel="noreferrer">
+            </div>
+            <div class="source-link source-link-static">
               <div>
                 <strong>Reference PDF</strong>
                 <span>Supporting source document included in the repository</span>
               </div>
-              <span class="chip">Open file</span>
-            </a>
-            <a class="source-link" href="./src/data/program-data.json" target="_blank" rel="noreferrer">
+            </div>
+            <div class="source-link source-link-static">
               <div>
                 <strong>Generated JSON</strong>
                 <span>Machine-readable workbook export used by the interface</span>
               </div>
-              <span class="chip">Open file</span>
-            </a>
+            </div>
           </div>
         </article>
         <article class="card">
