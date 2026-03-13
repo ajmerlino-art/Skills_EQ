@@ -318,11 +318,7 @@
         <div>
           <div class="eyebrow"><span class="eyebrow-dot"></span> Interactive GitHub Pages Dashboard</div>
           <h1>${escapeHtml(programData.summary.programTitle)}</h1>
-          <p>
-            Rich-skill dashboard rebuilt as a client-side local app. It runs directly from committed files,
-            but now supports tabbed exploration, search, filtering, and detail panels for skills, categories,
-            and courses.
-          </p>
+          <p>Hi-Fi Model for FCC Attendees</p>
           <div class="hero-meta">
             <span class="meta-pill">${escapeHtml(programData.summary.programCode)}</span>
             <span class="meta-pill">${escapeHtml(programData.summary.courseCount)} courses</span>
