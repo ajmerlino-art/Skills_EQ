@@ -6,7 +6,12 @@ Static React dashboard for the WGU B.S. User Experience Design Skills EQ prototy
 
 - Recreated the provided dashboard as a GitHub-ready Vite app.
 - Removed any need for API keys by committing the source spreadsheet and generated JSON.
-- Added GitHub Pages deployment workflow for the `Skills_EQ` repository.
+- Added a GitHub Pages workflow template at `docs/github-pages-deploy.yml`.
+
+## Publishing on GitHub
+
+If you want GitHub Pages automation, move `docs/github-pages-deploy.yml` to `.github/workflows/deploy.yml`.
+The push token available in this session does not have the GitHub `workflow` scope, so the workflow is stored as a template instead of being pushed live.
 
 ## Local development
 
