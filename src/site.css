@@ -350,7 +350,7 @@ select {
 .radar-svg {
   width: 100%;
   height: auto;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .radar-grid-shape {

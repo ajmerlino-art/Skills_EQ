@@ -170,12 +170,31 @@
   }
 
   function radarChart(items) {
-    const width = 360;
-    const height = 320;
-    const cx = 170;
-    const cy = 150;
-    const radius = 104;
+    const width = 420;
+    const height = 340;
+    const cx = 210;
+    const cy = 158;
+    const radius = 92;
     const levels = 4;
+
+    function wrapLabel(label) {
+      const words = label.split(" ");
+      const lines = [];
+      let current = "";
+      const maxChars = 16;
+
+      words.forEach(function (word) {
+        const next = current ? current + " " + word : word;
+        if (next.length <= maxChars || !current) current = next;
+        else {
+          lines.push(current);
+          current = word;
+        }
+      });
+
+      if (current) lines.push(current);
+      return lines.slice(0, 3);
+    }
 
     function point(angleIndex, scale) {
       const angle = (-Math.PI / 2) + ((Math.PI * 2) / items.length) * angleIndex;
@@ -211,9 +230,15 @@
     }).join("");
 
     const labels = items.map(function (item, index) {
-      const p = point(index, 1.18);
+      const p = point(index, 1.12);
       const anchor = p.x < cx - 20 ? "end" : p.x > cx + 20 ? "start" : "middle";
-      return '<text class="radar-label" x="' + p.x.toFixed(1) + '" y="' + p.y.toFixed(1) + '" text-anchor="' + anchor + '">' + escapeHtml(item.name) + "</text>";
+      const lines = wrapLabel(item.name);
+      const startY = p.y - ((lines.length - 1) * 6);
+      return '<text class="radar-label" x="' + p.x.toFixed(1) + '" y="' + startY.toFixed(1) + '" text-anchor="' + anchor + '">' +
+        lines.map(function (line, lineIndex) {
+          return '<tspan x="' + p.x.toFixed(1) + '" dy="' + (lineIndex === 0 ? 0 : 12) + '">' + escapeHtml(line) + "</tspan>";
+        }).join("") +
+        "</text>";
     }).join("");
 
     const ticks = [25, 50, 75, 100].map(function (tick, index) {
