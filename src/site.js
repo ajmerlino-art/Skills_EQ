@@ -223,6 +223,10 @@
       const p = point(index, item.score / 100);
       return p.x.toFixed(1) + "," + p.y.toFixed(1);
     }).join(" ");
+    const closedDataPoints = dataPoints + " " + (function () {
+      const first = point(0, items[0].score / 100);
+      return first.x.toFixed(1) + "," + first.y.toFixed(1);
+    })();
 
     const dots = items.map(function (item, index) {
       const p = point(index, item.score / 100);
@@ -251,7 +255,7 @@
           ${grid}
           ${axes}
           <polygon class="radar-data-fill" points="${dataPoints}"></polygon>
-          <polyline class="radar-data-line" points="${dataPoints}"></polyline>
+          <polyline class="radar-data-line" points="${closedDataPoints}"></polyline>
           ${dots}
           ${labels}
           ${ticks}
