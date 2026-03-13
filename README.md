@@ -2,7 +2,7 @@
 
 Static React dashboard for the WGU B.S. User Experience Design Skills EQ prototype.
 
-The root `index.html` is set up to run directly on GitHub Pages with no build step. The Vite files are still included for local development if Node is available later.
+The published page now runs from plain local HTML/CSS/JS with no build step and no third-party runtime dependency. The earlier Vite/React files are still included as source/reference work.
 
 ## What changed
 
@@ -35,5 +35,7 @@ npm run build
 - `public/assets/document-reference.pdf`
 - `src/data/program-data.json`
 - `src/data/program-data.global.js`
+- `src/site.js`
+- `src/site.css`
 
 The generated JSON/JS data comes from `scripts/generate_program_data.py` and uses only Python's standard library.
