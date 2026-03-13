@@ -1,13 +1,14 @@
 # Skills EQ Dashboard
 
-Static React dashboard for the WGU B.S. User Experience Design Skills EQ prototype.
+Interactive dashboard for the WGU B.S. User Experience Design Skills EQ prototype.
 
-The published page now runs from plain local HTML/CSS/JS with no build step and no third-party runtime dependency. The earlier Vite/React files are still included as source/reference work.
+The published page runs from plain local HTML/CSS/JS with no build step and no third-party runtime dependency. The earlier Vite/React files are still included as source/reference work.
 
 ## What changed
 
 - Recreated the provided dashboard as a GitHub-ready Vite app.
 - Removed any need for API keys by committing the source spreadsheet and generated JSON.
+- Reintroduced interaction on GitHub Pages with client-side tabs, search, filtering, and detail panels.
 - Added a GitHub Pages workflow template at `docs/github-pages-deploy.yml`.
 
 ## Publishing on GitHub
